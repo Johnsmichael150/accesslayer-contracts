@@ -33,6 +33,9 @@ pub mod fee {
     /// Basis points per 100% (10000 = 100%).
     pub const BPS_MAX: u32 = 10_000;
 
+    /// Maximum safe amount to prevent overflow in fee calculations.
+    pub const MAX_SAFE_AMOUNT: i128 = i128::MAX / BPS_MAX as i128;
+
     /// Maximum protocol share when configuring fees via [`assert_valid_fee_bps`].
     ///
     /// Caps the on-chain configured protocol take at 50% so fee settings stay within
@@ -383,6 +386,7 @@ fn resolve_quote_inputs(env: &Env, creator: &Address) -> Result<Option<i128>, Co
 ///
 /// Zero-value quote requests are treated as no-op quotes and return `None`.
 /// Negative quote amounts are rejected consistently across buy and sell paths.
+/// Amounts exceeding MAX_SAFE_AMOUNT are rejected to prevent overflow in fee calculations.
 fn normalize_quote_amount(amount: i128) -> Result<Option<i128>, ContractError> {
     if amount < 0 {
         return Err(ContractError::NotPositiveAmount);
@@ -390,6 +394,10 @@ fn normalize_quote_amount(amount: i128) -> Result<Option<i128>, ContractError> {
 
     if amount == 0 {
         return Ok(None);
+    }
+
+    if amount > fee::MAX_SAFE_AMOUNT {
+        return Err(ContractError::Overflow);
     }
 
     Ok(Some(amount))
@@ -1068,6 +1076,15 @@ mod tests {
         assert_eq!(
             super::normalize_quote_amount(-1),
             Err(super::ContractError::NotPositiveAmount)
+        );
+    }
+
+    #[test]
+    fn test_normalize_quote_amount_rejects_large_amount() {
+        let large = super::fee::MAX_SAFE_AMOUNT + 1;
+        assert_eq!(
+            super::normalize_quote_amount(large),
+            Err(super::ContractError::Overflow)
         );
     }
 
