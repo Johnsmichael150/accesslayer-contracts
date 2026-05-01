@@ -38,6 +38,7 @@ For guidance on writing deterministic quote tests, see [docs/deterministic-quote
 - **[Deterministic Quote Tests](./docs/deterministic-quote-tests.md)**: Guide for writing tests for quote operations with the fixed price model
 - **[Quote Math Refactor Guidelines](./docs/quote-math-refactor-guidelines.md)**: Checklist for preserving quote invariants and required regression coverage during quote-path refactors
 - **[Fee Assumptions](./docs/fee-assumptions.md)**: Fee split logic, rounding behavior, and integration points
+- **[Read-only Methods](./docs/read-only-methods.md)**: Return value semantics, units, and edge-case behaviour for every `get_*` / `is_*` entrypoint including all bps fields
 - **[Error Codes](./docs/error-codes.md)**: Contract error reference with causes and expected caller behavior
 - **[Safely Extending Contract Error Codes](./docs/error-extension-guide.md)**: Rules for naming new error variants, preserving discriminants, and updating error tables
 
