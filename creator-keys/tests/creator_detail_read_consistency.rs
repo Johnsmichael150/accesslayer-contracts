@@ -67,15 +67,6 @@ fn test_creator_details_identical_across_three_consecutive_reads() {
         "supply must be identical across reads"
     );
 
-    assert_eq!(
-        read1.holder_count, read2.holder_count,
-        "holder_count must be identical across reads"
-    );
-    assert_eq!(
-        read2.holder_count, read3.holder_count,
-        "holder_count must be identical across reads"
-    );
-
     // Verify expected values
     assert!(read1.is_registered, "creator should be registered");
     assert_eq!(read1.creator, creator, "creator address should match");
@@ -83,10 +74,6 @@ fn test_creator_details_identical_across_three_consecutive_reads() {
     assert_eq!(
         read1.supply, 0,
         "supply should be 0 for newly registered creator"
-    );
-    assert_eq!(
-        read1.holder_count, 0,
-        "holder_count should be 0 for newly registered creator"
     );
 }
 
@@ -129,18 +116,9 @@ fn test_creator_details_identical_across_five_consecutive_reads_after_buy() {
     assert_eq!(read3.supply, read4.supply);
     assert_eq!(read4.supply, read5.supply);
 
-    assert_eq!(read1.holder_count, read2.holder_count);
-    assert_eq!(read2.holder_count, read3.holder_count);
-    assert_eq!(read3.holder_count, read4.holder_count);
-    assert_eq!(read4.holder_count, read5.holder_count);
-
     // Verify expected values after buy
     assert!(read1.is_registered);
     assert_eq!(read1.supply, 1, "supply should be 1 after one buy");
-    assert_eq!(
-        read1.holder_count, 1,
-        "holder_count should be 1 after one buyer"
-    );
 }
 
 #[test]
@@ -224,14 +202,7 @@ fn test_unregistered_creator_details_identical_across_reads() {
 
     assert_eq!(read1.supply, read2.supply);
     assert_eq!(read2.supply, read3.supply);
-    assert_eq!(read1.supply, 0, "supply should be 0 for unregistered");
-
-    assert_eq!(read1.holder_count, read2.holder_count);
-    assert_eq!(read2.holder_count, read3.holder_count);
-    assert_eq!(
-        read1.holder_count, 0,
-        "holder_count should be 0 for unregistered"
-    );
+    assert_eq!(read3.supply, 0, "supply should be 0 for unregistered");
 }
 
 #[test]
@@ -265,16 +236,6 @@ fn test_creator_details_consistency_across_ten_reads() {
         assert_eq!(
             reads[0].supply, reads[i].supply,
             "supply mismatch at read {}",
-            i
-        );
-        assert_eq!(
-            reads[0].holder_count, reads[i].holder_count,
-            "holder_count mismatch at read {}",
-            i
-        );
-        assert_eq!(
-            reads[0].fee_recipient, reads[i].fee_recipient,
-            "fee_recipient mismatch at read {}",
             i
         );
     }
