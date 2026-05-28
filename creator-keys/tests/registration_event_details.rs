@@ -27,7 +27,9 @@ fn test_register_creator_event_field_values_match_fixtures() {
 
     // 4. Capture the emitted event
     let all_events = env.events().all();
-    let registration_event = all_events.last().expect("should have emitted a registration event");
+    let registration_event = all_events
+        .last()
+        .expect("should have emitted a registration event");
 
     // 5. Decode payload
     let payload: events::CreatorRegisteredEvent = registration_event.2.into_val(&env);
@@ -76,7 +78,8 @@ fn test_register_creator_event_fields_update_with_fee_config() {
     let creator1 = Address::generate(&env);
     client.register_creator(&creator1, &String::from_str(&env, "creator_1"));
 
-    let event1: events::CreatorRegisteredEvent = env.events().all().last().unwrap().2.into_val(&env);
+    let event1: events::CreatorRegisteredEvent =
+        env.events().all().last().unwrap().2.into_val(&env);
     assert_eq!(event1.creator_bps, 9000);
     assert_eq!(event1.protocol_bps, 1000);
 
@@ -85,7 +88,8 @@ fn test_register_creator_event_fields_update_with_fee_config() {
     let creator2 = Address::generate(&env);
     client.register_creator(&creator2, &String::from_str(&env, "creator_2"));
 
-    let event2: events::CreatorRegisteredEvent = env.events().all().last().unwrap().2.into_val(&env);
+    let event2: events::CreatorRegisteredEvent =
+        env.events().all().last().unwrap().2.into_val(&env);
     assert_eq!(event2.creator_bps, 8000);
     assert_eq!(event2.protocol_bps, 2000);
 }

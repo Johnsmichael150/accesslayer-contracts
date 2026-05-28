@@ -25,7 +25,9 @@ fn test_buy_quote_is_stable_across_multiple_calls() {
     let supply_before = client.get_creator_supply(&creator);
 
     // Capture initial quote
-    let first_quote = client.get_buy_quote(&creator).expect("first quote should succeed");
+    let first_quote = client
+        .get_buy_quote(&creator)
+        .expect("first quote should succeed");
 
     // Perform multiple consecutive calls and verify they match the first result
     for i in 0..5 {
