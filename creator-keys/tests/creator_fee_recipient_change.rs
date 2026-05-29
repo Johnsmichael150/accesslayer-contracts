@@ -114,7 +114,7 @@ fn test_creator_fee_recipient_change_affects_both_buy_and_sell() {
     client.set_creator_fee_recipient(&admin, &creator, &new_recipient);
 
     // Holder sells the key - should use new recipient
-    let supply = client.sell_key(&creator, &holder, &1);
+    let supply = client.sell_key(&creator, &holder);
     assert_eq!(supply, 0, "supply should be 0 after sell");
 
     // Verify holder sold the key
