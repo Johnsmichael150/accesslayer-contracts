@@ -224,7 +224,11 @@ fn test_buy_key_event_payload_fields_are_validated_from_fixture() {
     // Ensure the buy event contains exactly the documented number of fields.
     let all_events = env.events().all();
     let last_event = all_events.last().unwrap();
-    assert_event_field_count(last_event, &env, creator_keys::events::BUY_EVENT_FIELD_COUNT);
+    assert_event_field_count(
+        last_event,
+        &env,
+        creator_keys::events::BUY_EVENT_FIELD_COUNT,
+    );
 }
 
 #[test]
