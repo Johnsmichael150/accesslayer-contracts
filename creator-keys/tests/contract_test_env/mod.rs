@@ -178,6 +178,25 @@ pub fn capture_snapshot(
     }
 }
 
+/// Performs `count` buys with payment amounts that increment from `starting_amount`.
+///
+/// Returns the resulting observable state for the creator and buyer after the sequence.
+pub fn perform_incrementing_buys(
+    client: &CreatorKeysContractClient<'_>,
+    creator: &Address,
+    buyer: &Address,
+    count: u32,
+    starting_amount: i128,
+    amount_step: i128,
+) -> ContractStateSnapshot {
+    for buy_index in 0..count {
+        let payment = starting_amount + i128::from(buy_index) * amount_step;
+        client.buy_key(creator, buyer, &payment);
+    }
+
+    capture_snapshot(client, creator, buyer)
+}
+
 impl ContractStateSnapshot {
     /// Asserts that `self` and `other` are identical, failing with a descriptive message if not.
     pub fn assert_unchanged(&self, after: &ContractStateSnapshot) {
