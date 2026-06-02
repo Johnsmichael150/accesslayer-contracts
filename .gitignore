@@ -1,4 +1,6 @@
 target/
 .DS_Store
 .soroban/
+
+fix.md
 claude.md
